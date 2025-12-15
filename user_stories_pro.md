@@ -10,6 +10,7 @@ _As a [user role], I want [feature/goal], so that [reason]._
 **Notes:**
 - [Additional information or edge cases]
 
+## Admin User Stories
 **Admin access:**
 _As an admin, I want to log into the portal with my username and password, so that I can manage the platform securely._
 **Acceptance Criteria:**
@@ -65,6 +66,7 @@ _As an admin user, I want to get all the appointments in a month and generate st
 **Story Points:** [5]
 **Notes:**
 
+## Patient User Stories
 **View Doctors Without Login:**
 _As a patient, I want to view a list of doctors without logging in, so that I can explore available options before registering._
 **Acceptance Criteria:**
@@ -131,6 +133,7 @@ As a patient, I want to view my upcoming appointments, so that I can prepare acc
 **Notes:**
 - [Appointments should be sorted by date and time.]
 
+## Doctor User Stories
 **Doctor Login:**
 _As a doctor, I want to log into the portal, so that I can manage my appointments._
 **Acceptance Criteria:**
