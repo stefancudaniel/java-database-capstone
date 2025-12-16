@@ -5,10 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -87,6 +84,7 @@ public class Patient {
     private String address;
 
     @NotNull(message = "Date of Birth cannot be null")
+    @Past
     private DateTimeFormat dateofbirth;
 
     @NotNull(message = "Gender cannot be null")

@@ -97,12 +97,8 @@ public class Doctor {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-
-
-
     @ElementCollection
     private List<String> availableTimes;
-
 
     private Long clinic_location_id;
 

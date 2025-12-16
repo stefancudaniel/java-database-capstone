@@ -107,6 +107,10 @@ public class Appointment {
         return this.appointmentTime.toLocalTime();
     }
 
+    private String reasonForVisit;
+
+    private String notes;
+
 
 // 9. Constructor(s):
 //    - A no-argument constructor is implicitly provided by JPA for entity creation.
@@ -164,6 +168,23 @@ public class Appointment {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    public String getReasonForVisit() {
+        return reasonForVisit;
+    }
+
+    public void setReasonForVisit(String reasonForVisit) {
+        this.reasonForVisit = reasonForVisit;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
 
 }
 
