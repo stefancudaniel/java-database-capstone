@@ -2,9 +2,9 @@
 
 ### Table: appointments
 - id: INT, Primary Key, Auto Increment
-- doctor_id: INT, Foreign Key → doctors(id)
-- patient_id: INT, Foreign Key → patients(id)
-- appointment_time: DATETIME, Not Null
+- doctor: INT, Foreign Key → doctors(id)
+- patient: INT, Foreign Key → patients(id)
+- appointmentTime: DATETIME, Not Null
 - status: INT (0 = Scheduled, 1 = Completed, 2 = Cancelled)
 
 ### Table: patients
@@ -12,24 +12,24 @@
 - first_name: VARCHAR(100), NOT NULL
 - last_name: VARCHAR(100), NOT NULL
 - date_of_birth: DATE, NOT NULL
-- gender: ENUM('Male','Female','Other'), NOT NULL
+- gender: INT (0 = Male, 1= Female, 3 = Other)
 - email: VARCHAR(150), UNIQUE, NULL
 - phone: VARCHAR(20), UNIQUE, NOT NULL
 - address: TEXT, NULL
 - created_at: DATETIME, NOT NULL, DEFAULT CURRENT_TIMESTAMP
+- is_active: BOOLEAN, NOT NULL, DEFAULT FALSE 
 
 Comments / Design Decisions:
 - Email and phone uniqueness enforced at DB level.
 - Email/phone format validation should be handled in application code, not DB.
 - Patients should NOT be hard-deleted → historical appointments must remain.
-- Recommended: add is_active BOOLEAN DEFAULT TRUE instead of deleting records.
 
 
 ### Table: doctors
 - id: INT, Primary Key, Auto Increment
 - first_name: VARCHAR(100), NOT NULL
 - last_name: VARCHAR(100), NOT NULL
-- specialization: VARCHAR(150), NOT NULL
+- specialty: VARCHAR(150), NOT NULL
 - email: VARCHAR(150), UNIQUE, NOT NULL
 - phone: VARCHAR(20), UNIQUE, NOT NULL
 - clinic_location_id: INT, Foreign Key → clinic_locations(id)
@@ -44,14 +44,9 @@ Comments / Design Decisions:
 ### Table: admin
 - id: INT, Primary Key, Auto Increment
 - username: VARCHAR(100), UNIQUE, NOT NULL
-- password_hash: VARCHAR(255), NOT NULL
+- password: VARCHAR(255), NOT NULL
 - email: VARCHAR(150), UNIQUE, NOT NULL
-- role: ENUM('SuperAdmin','Staff'), NOT NULL
 - created_at: DATETIME, NOT NULL, DEFAULT CURRENT_TIMESTAMP
-
-Comments:
-- Passwords are stored as hashes only.
-- Role controls access permissions.
 
 
 ### Table: clinic_locations
@@ -102,12 +97,7 @@ Design Answer:
   "appointmentId": 51,
   "medication": "Paracetamol",
   "dosage": "500mg",
-  "doctorNotes": "Take 1 tablet every 6 hours.",
-  "refillCount": 2,
-  "pharmacy": {
-    "name": "Walgreens SF",
-    "location": "Market Street"
-  }
+  "doctorNotes": "Take 1 tablet every 6 hours."
 }
 ```
 
