@@ -9,14 +9,11 @@
 
 ### Table: patients
 - id: INT, Primary Key, Auto Increment
-- first_name: VARCHAR(100), NOT NULL
-- last_name: VARCHAR(100), NOT NULL
-- date_of_birth: DATE, NOT NULL
-- gender: INT (0 = Male, 1= Female, 3 = Other)
+- name: VARCHAR(100), NOT NULL
 - email: VARCHAR(150), UNIQUE, NULL
+- password: VARCHAR(150), UNIQUE, NOT NULL
 - phone: VARCHAR(20), UNIQUE, NOT NULL
 - address: TEXT, NULL
-- created_at: DATETIME, NOT NULL, DEFAULT CURRENT_TIMESTAMP
 - is_active: BOOLEAN, NOT NULL, DEFAULT FALSE 
 
 Comments / Design Decisions:
@@ -27,14 +24,13 @@ Comments / Design Decisions:
 
 ### Table: doctors
 - id: INT, Primary Key, Auto Increment
-- first_name: VARCHAR(100), NOT NULL
-- last_name: VARCHAR(100), NOT NULL
+- name: VARCHAR(100), NOT NULL
 - specialty: VARCHAR(150), NOT NULL
 - email: VARCHAR(150), UNIQUE, NOT NULL
+- password: VARCHAR(150), UNIQUE, NOT NULL
 - phone: VARCHAR(20), UNIQUE, NOT NULL
 - clinic_location_id: INT, Foreign Key → clinic_locations(id)
-- is_active: BOOLEAN, NOT NULL, DEFAULT TRUE
-- created_at: DATETIME, NOT NULL, DEFAULT CURRENT_TIMESTAMP
+- is_active: BOOLEAN, DEFAULT TRUE
 
 Comments / Design Decisions:
 - Doctors are linked to a clinic location.
@@ -45,9 +41,6 @@ Comments / Design Decisions:
 - id: INT, Primary Key, Auto Increment
 - username: VARCHAR(100), UNIQUE, NOT NULL
 - password: VARCHAR(255), NOT NULL
-- email: VARCHAR(150), UNIQUE, NOT NULL
-- created_at: DATETIME, NOT NULL, DEFAULT CURRENT_TIMESTAMP
-
 
 ### Table: clinic_locations
 - id: INT, Primary Key, Auto Increment
