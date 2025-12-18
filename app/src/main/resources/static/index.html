@@ -1,4 +1,45 @@
 <!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Role</title>
+    <link href="../assets/images/logo/Logo .png" rel="icon" type="image/png">
+    <link href="../assets/css/index.css" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <script defer src="../js/util.js"></script>
+    <script defer src="../js/render.js"></script>
+    <script defer src="../js/components/header.js"></script>
+    <script defer src="../js/components/footer.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="wrapper">
+        <div id="header"></div>
+        <main>
+            <h1>Select Your Role</h1>
+            <div class="role-buttons">
+                <button id="adminBtn">Admin</button>
+                <button id="patientBtn">Patient</button>
+                <button id="doctorBtn">Doctor</button>
+            </div>
+        </main>
+        <div id="footer"></div>
+    </div>
+</div>
+
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <div id="modal-inner-content"></div>
+    </div>
+</div>
+
+<script type="module" src="../js/services/index.js" defer></script>
+</body>
+</html>
+
+
 <!-- 
 
 Step-by-Step Explanation of `index.html`.
@@ -9,13 +50,18 @@ and triggers modal-based login functionality.
 
    * Add a comment at the very top to identify the file as `index.html`. This helps developers stay organized.
 
+
+
 2. Declare Document Type
 
    * Use the declaration for HTML5 so browsers know how to render the page correctly.
 
+
+
 3. Start the HTML Document
 
    * Begin the HTML structure and set the document language to English to improve accessibility and SEO `lang="en"`.
+    `<html lang="en">`
 
 4. Head Section (Metadata and Resources)
 
@@ -58,9 +104,11 @@ and triggers modal-based login functionality.
 
     * Wrap up metadata and begin the visible page content.
 
+
 11. Create a Container
 
     * Add a main container to hold all page elements and apply layout constraints.
+
 
 12. Use a Wrapper for Structure
 

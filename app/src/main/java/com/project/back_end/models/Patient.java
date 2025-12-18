@@ -1,12 +1,10 @@
 package com.project.back_end.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 @Entity
 public class Patient {
@@ -32,14 +30,9 @@ public class Patient {
 //      - The @Size(min = 3, max = 100) annotation ensures that the name length is between 3 and 100 characters. 
 //      - Provides validation for correct input and user experience.
 
-    @NotNull(message = "First name cannot be null")
+    @NotNull(message = "Name cannot be null")
     @Size(min = 3, max = 100, message = "Name must be between 3 and 100 characters")
-    private String first_name;
-
-    @NotNull(message = "Last name cannot be null")
-    @Size(min = 3, max = 100, message = "Name must be between 3 and 100 characters")
-    private String last_name;
-
+    private String name;
 
 // 3. 'email' field:
 //    - Type: private String
@@ -83,18 +76,7 @@ public class Patient {
     @Size(max = 255, message = "Address cannot exceed 255 characters")
     private String address;
 
-    @NotNull(message = "Date of Birth cannot be null")
-    @Past
-    private DateTimeFormat dateofbirth;
-
-    @NotNull(message = "Gender cannot be null")
-    private Integer gender;// 0 = Male, 1 = Female , 2 = Other
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @NotNull
-    private DateTimeFormat created_at;
-
-    @NotNull
+    @Column(columnDefinition = "boolean default false")
     private Boolean is_active = true;
 
 // 7. Getters and Setters:
@@ -109,20 +91,12 @@ public class Patient {
         this.id = id;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getName() {
+        return name;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
-    }
-
-    public String getLast_name() {
-        return last_name;
-    }
-
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -155,30 +129,6 @@ public class Patient {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public DateTimeFormat getDateofbirth() {
-        return dateofbirth;
-    }
-
-    public void setDateofbirth(DateTimeFormat dateofbirth) {
-        this.dateofbirth = dateofbirth;
-    }
-
-    public Integer getGender() {
-        return gender;
-    }
-
-    public void setGender(Integer gender) {
-        this.gender = gender;
-    }
-
-    public DateTimeFormat getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(DateTimeFormat created_at) {
-        this.created_at = created_at;
     }
 
     public Boolean getIs_active() {

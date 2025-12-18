@@ -29,11 +29,7 @@ public class Prescription {
 
     @NotNull
     @Size(min = 3, max = 100)
-    private String patientFirstName;
-
-    @NotNull
-    @Size(min = 3, max = 100)
-    private String patientLastName;
+    private String patientName;
 
 // 3. 'appointmentId' field:
 //    - Type: private Long
@@ -79,9 +75,8 @@ public class Prescription {
     public Prescription() {
     }
 
-    public Prescription(String patientFirstName, String patientLastName, String medication, String dosage, String doctorNotes, Long appointmentId) {
-        this.patientFirstName = patientFirstName;
-        this.patientLastName = patientLastName;
+    public Prescription(String patientFirstName, String medication, String dosage, String doctorNotes, Long appointmentId) {
+        this.patientName = patientFirstName;
         this.medication = medication;
         this.dosage = dosage;
         this.doctorNotes = doctorNotes;
@@ -91,6 +86,54 @@ public class Prescription {
 // 8. Getters and Setters:
 //    - Standard getter and setter methods are provided for all fields: id, patientName, medication, dosage, doctorNotes, and appointmentId.
 //    - These methods allow access and modification of the fields of the Prescription class.
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getPatientName() {
+        return patientName;
+    }
+
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
+    }
+
+    public Long getAppointmentId() {
+        return appointmentId;
+    }
+
+    public void setAppointmentId(Long appointmentId) {
+        this.appointmentId = appointmentId;
+    }
+
+    public String getMedication() {
+        return medication;
+    }
+
+    public void setMedication(String medication) {
+        this.medication = medication;
+    }
+
+    public String getDosage() {
+        return dosage;
+    }
+
+    public void setDosage(String dosage) {
+        this.dosage = dosage;
+    }
+
+    public String getDoctorNotes() {
+        return doctorNotes;
+    }
+
+    public void setDoctorNotes(String doctorNotes) {
+        this.doctorNotes = doctorNotes;
+    }
 
 
 }

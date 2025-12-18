@@ -3,9 +3,8 @@ package com.project.back_end.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import org.springframework.boot.context.properties.bind.DefaultValue;
-import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.List;
 @Entity
 public class Doctor {
@@ -73,13 +72,9 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "First name cannot be null")
+    @NotNull(message = "Name cannot be null")
     @Size(min = 3, max = 100, message = "Name must be between 3 and 100 characters")
-    private String first_name;
-
-    @NotNull(message = "Last name cannot be null")
-    @Size(min = 3, max = 100, message = "Name must be between 3 and 100 characters")
-    private String last_name;
+    private String name;
 
     @NotNull(message = "Specialty cannot be null")
     @Size(min = 3, max = 50, message = "Specialty must be between 3 and 50 characters")
@@ -102,12 +97,8 @@ public class Doctor {
 
     private Long clinic_location_id;
 
-    @NotNull
+    @Column(columnDefinition = "boolean default false")
     private Boolean is_active;
-
-    @NotNull(message = "Creation date cannot be null")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private DateTimeFormat created_at;
 
 
     public Long getId() {
@@ -118,20 +109,12 @@ public class Doctor {
         this.id = id;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getName() {
+        return name;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
-    }
-
-    public String getLast_name() {
-        return last_name;
-    }
-
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getSpecialty() {
@@ -190,13 +173,6 @@ public class Doctor {
         this.is_active = is_active;
     }
 
-    public DateTimeFormat getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(DateTimeFormat created_at) {
-        this.created_at = created_at;
-    }
 
 
 }
