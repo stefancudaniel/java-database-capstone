@@ -1,10 +1,105 @@
+import { openModal } from "./modalHandler.js";
 /*
   This script handles the admin dashboard functionality for managing doctors:
   - Loads all doctor cards
   - Filters doctors by name, time, or specialty
   - Adds a new doctor via modal form
+  */
+import { getDoctors, filterDoctors, saveDoctor } from "../services/doctorServices.js";
+
+document.getElementById('addDocBtn').addEventListener('click', () => {
+  openModal('addDoctor');
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  loadDoctorCards();
+});
+
+async function loadDoctorCards() {
+  try {
+    const doctors = await getDoctors();
+    const contentDiv = document.getElementById('content');
+    contentDiv.innerHTML = '';
+    doctors.forEach(doctor => {
+      const doctorCard = createDoctorCard(doctor);
+      contentDiv.appendChild(doctorCard);
+    });
+  } catch (error) {
+    console.error("Error loading doctors:", error);
+  }
+}
+
+document.getElementById('searchBar').addEventListener('input', filterDoctorsOnChange);
+document.getElementById('timeFilter').addEventListener('change', filterDoctorsOnChange);
+document.getElementById('specialtyFilter').addEventListener('change', filterDoctorsOnChange);
+
+async function filterDoctorsOnChange() {
+  const name = document.getElementById('searchBar').value || null;
+  const time = document.getElementById('timeFilter').value || null;
+    const specialty = document.getElementById('specialtyFilter').value || null;
+    try {
+    const filteredDoctors = await filterDoctors(name, time, specialty);
+    if (filteredDoctors.length > 0) {
+      renderDoctorCards(filteredDoctors);
+    } else {
+      const contentDiv = document.getElementById('content');
+      contentDiv.innerHTML = '<p>No doctors found with the given filters.</p>';
+    }
+    }
+    catch (error) {
+    alert(`Error filtering doctors: ${error.message}`);
+  }
+}
+
+function renderDoctorCards(doctors) {
+  const contentDiv = document.getElementById('content');
+  contentDiv.innerHTML = '';
+  doctors.forEach(doctor => {
+    const doctorCard = createDoctorCard(doctor);
+    contentDiv.appendChild(doctorCard);
+  });
+}
+
+window.adminAddDoctor = async function() {
+  const name = document.getElementById('doctorName').value;
+  const email = document.getElementById('doctorEmail').value;
+  const phone = document.getElementById('doctorPhone').value;
+  const password = document.getElementById('doctorPassword').value;
+  const specialty = document.getElementById('doctorSpecialty').value;
+  const availableTimes = Array.from(document.querySelectorAll('input[name="availableTimes"]:checked')).map(input => input.value);
+
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('No authentication token found. Please log in again.');
+    return;
+  }
+
+  const doctor = {
+    name,
+    email,
+    phone,
+    password,
+    specialty,
+    availableTimes
+  };
+
+  try {
+    const response = await saveDoctor(doctor, token);
+    if (response.success) {
+      alert('Doctor added successfully!');
+        closeModal('addDoctor');
+        location.reload();
+        }
+    else {
+        alert(`Error adding doctor: ${response.message}`);
+    }
+    } catch (error) {
+    alert(`Error adding doctor: ${error.message}`);
+    }
+};
 
 
+/*
   Attach a click listener to the "Add Doctor" button
   When clicked, it opens a modal form using openModal('addDoctor')
 
