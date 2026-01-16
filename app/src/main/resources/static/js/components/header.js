@@ -205,12 +205,10 @@ function logoutPatient() {
 }
 
 renderHeader();
-    headerContent += `</nav>
-
+    headerContent += `
+        </nav>
     </header>`;
-    headerDiv.innerHTML = headerContent;
-        attachHeaderButtonListeners();
-}
+
 
 
    

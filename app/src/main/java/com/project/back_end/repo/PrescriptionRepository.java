@@ -1,6 +1,11 @@
 package com.project.back_end.repo;
 
-public interface PrescriptionRepository  {
+import com.project.back_end.models.Prescription;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+import java.util.List;
+
+public interface PrescriptionRepository extends MongoRepository<Prescription, String> {
 // 1. Extend MongoRepository:
 //    - The repository extends MongoRepository<Prescription, String>, which provides basic CRUD functionality for MongoDB.
 //    - This allows the repository to perform operations like save, delete, update, and find without needing to implement these methods manually.
@@ -8,6 +13,7 @@ public interface PrescriptionRepository  {
 
 // Example: public interface PrescriptionRepository extends MongoRepository<Prescription, String> {}
 
+    List<Prescription> findByAppointmentId(Long appointmentId);
 // 2. Custom Query Method:
 
 //    - **findByAppointmentId**:

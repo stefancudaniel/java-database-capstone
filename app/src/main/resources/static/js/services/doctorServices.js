@@ -1,8 +1,10 @@
 /*
   Import the base API URL from the config file
   */
-import { API_BASE_URL } from "../config/config.js";
 
+//import { API_BASE_URL } from "/js/config/config.js";
+
+import { API_BASE_URL } from "../config/config.js";
 /*
   Define a constant DOCTOR_API to hold the full endpoint for doctor-related actions
   Function: getDoctors
@@ -13,20 +15,30 @@ import { API_BASE_URL } from "../config/config.js";
    Return the 'doctors' array from the response
    If there's an error (e.g., network issue), log it and return an empty array
    */
-   const DOCTOR_API = API_BASE_URL + '/doctor'
+   const DOCTOR_API = `${API_BASE_URL}/doctor`;
+
 export async function getDoctors() {
   try {
-    const response = await fetch(DOCTOR_API);
-    const data = await response.json();
-    return data.doctors;
-  } catch (error) {
-    console.error("Error fetching doctors:", error);
-    return [];
-  }
+     const response = await fetch(`${DOCTOR_API}/get`, {
+       method: 'GET',
+       headers: { 'Content-Type': 'application/json' },
+     });
+
+     if (!response.ok) {
+       console.error('getDoctors failed:', response.status, response.statusText);
+       return [];
+     }
+
+     const data = await response.json();
+     return data.doctors ?? [];
+   } catch (error) {
+     console.error('Error fetching doctors:', error);
+     return [];
+   }
 }
 
-/*
-  Function: deleteDoctor
+
+ /* Function: deleteDoctor
   Purpose: Delete a specific doctor using their ID and an authentication token
 
    Use fetch() with the DELETE method
@@ -36,7 +48,7 @@ export async function getDoctors() {
     - success: true if deletion was successful
     - message: message from the server
    If an error occurs, log it and return a default failure response
-/*
+*/
 
 export async function deleteDoctor(doctorId, token) {
   try {
@@ -78,7 +90,7 @@ export async function deleteDoctor(doctorId, token) {
 
 export async function saveDoctor(doctor, token) {
   try {
-    const response = await fetch(`${DOCTOR_API}/save/${token}`, {
+    const response = await fetch(`${DOCTOR_API}/${token}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -118,7 +130,7 @@ export async function filterDoctors(name, time, specialty) {
     const response = await fetch(`${DOCTOR_API}/filter/${name}/${time}/${specialty}`);
     if (response.ok) {
       const data = await response.json();
-      return data;
+      return data.doctors ?? [];
     } else {
       console.error("Error filtering doctors:", response.statusText);
       return { doctors: [] };

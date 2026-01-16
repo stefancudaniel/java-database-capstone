@@ -39,9 +39,9 @@ Import the overlay function for booking appointments from loggedPatient.js
   Append doctor info and action buttons to the car
   Return the complete doctor card element
 */
-import { showBookingOverlay } from "./loggedPatient.js";
+//import { showBookingOverlay } from "../loggedPatient.js";
 import { deleteDoctor } from "../services/doctorServices.js";
-import { fetchPatientDetails } from "../services/patientServices.js";
+import { getPatientData } from "../services/patientServices.js";
 
 export function createDoctorCard(doctor) {
   const card = document.createElement("div");
@@ -53,7 +53,7 @@ export function createDoctorCard(doctor) {
   const nameElem = document.createElement("h3");
   nameElem.textContent = doctor.name;
     const specializationElem = document.createElement("p");
-    specializationElem.textContent = `Specialization: ${doctor.specialization}`;
+    specializationElem.textContent = `Specialization: ${doctor.specialty}`;
     const emailElem = document.createElement("p");
     emailElem.textContent = `Email: ${doctor.email}`;
     const availabilityElem = document.createElement("p");
@@ -127,7 +127,7 @@ export function createDoctorCard(doctor) {
                 return;
             }
             const patient = patientResponse.data;
-            showBookingOverlay(doctor, patient);
+           // showBookingOverlay(doctor, patient);
         };
     }
 

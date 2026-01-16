@@ -1,13 +1,14 @@
 
-  Import the openModal function to handle showing login popups/modals
+ /* Import the openModal function to handle showing login popups/modals
   Import the base API URL from the config file
-  Define constants for the admin and doctor login API endpoints using the base URL
+  Define constants for the admin and doctor login API endpoints using the base URL*/
 
-import { openModal } from "./modalHandler.js";
-import { BASE_API_URL } from "./config.js";
+//javascript
+import { openModal } from "/js/components/modals.js";
+import { API_BASE_URL } from "/js/config/config.js";
 
-const ADMIN_API = `${BASE_API_URL}/admin/login`;
-const DOCTOR_API = `${BASE_API_URL}/doctor/login`;
+const ADMIN_API = `${API_BASE_URL}/admin`;
+const DOCTOR_API = `${API_BASE_URL}/doctor/login`;
 
 /*
   Use the window.onload event to ensure DOM elements are available after page load
@@ -18,6 +19,7 @@ const DOCTOR_API = `${BASE_API_URL}/doctor/login`;
     - If the doctor login button exists:
         - Add a click event listener that calls openModal('doctorLogin') to show the doctor login modal
 */
+
 window.onload = function() {
             const adminBtn = document.getElementById('adminLogin');
          if (adminBtn) {
@@ -33,6 +35,30 @@ window.onload = function() {
             }
         };
 
+
+/*window.addEventListener('DOMContentLoaded', () => {
+  const adminBtn = document.getElementById('adminLogin');
+  if (adminBtn) {
+    adminBtn.addEventListener('click', () => {
+      if (typeof openModal === 'function') {
+        openModal('adminLogin');
+      } else {
+        console.error('openModal is not a function. Check modals.js export and import path.');
+      }
+    });
+  }
+
+  const doctorBtn = document.getElementById('doctorLogin');
+  if (doctorBtn) {
+    doctorBtn.addEventListener('click', () => {
+      if (typeof openModal === 'function') {
+        openModal('doctorLogin');
+      } else {
+        console.error('openModal is not a function. Check modals.js export and import path.');
+      }
+    });
+  }
+});*/
 
 
 
@@ -65,10 +91,12 @@ window.adminLoginHandler = async function() {
     const username = document.getElementById('adminUsername').value;
     const password = document.getElementById('adminPassword').value;
 
-    const admin = {
+   /* const admin = {
       username: username,
       password: password
-    };
+    };*/
+
+    const admin = { username, password };
 
     const response = await fetch(ADMIN_API, {
       method: 'POST',
@@ -82,7 +110,7 @@ window.adminLoginHandler = async function() {
       const data = await response.json();
       const token = data.token;
       localStorage.setItem('token', token);
-      selectRole('admin');
+      if (typeof selectRole === 'function') selectRole('admin');
     } else {
       alert('Invalid admin credentials. Please try again.');
     }
@@ -116,14 +144,16 @@ window.adminLoginHandler = async function() {
 */
 
 window.doctorLoginHandler = async function() {
-  try {
-    const email = document.getElementById('doctorEmail').value;
-    const password = document.getElementById('doctorPassword').value;
+    try {
+    const email = document.getElementById('doctorEmailLogin').value;
+    const password = document.getElementById('doctorPasswordLogin').value;
 
-    const doctor = {
+    /*const doctor = {
       email: email,
       password: password
-    };
+    };*/
+
+    const doctor = { email, password };
 
     const response = await fetch(DOCTOR_API, {
       method: 'POST',
@@ -137,14 +167,14 @@ window.doctorLoginHandler = async function() {
       const data = await response.json();
       const token = data.token;
       localStorage.setItem('token', token);
-      selectRole('doctor');
+      if (typeof selectRole === 'function') selectRole('doctor');
     } else {
       alert('Invalid doctor credentials. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error during doctor login:', error);
+      alert('An error occurred during login. Please try again later.');
     }
-  } catch (error) {
-    console.error('Error during doctor login:', error);
-    alert('An error occurred during login. Please try again later.');
-  }
-};
 
+    }
 

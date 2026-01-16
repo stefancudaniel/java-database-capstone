@@ -1,11 +1,14 @@
-import { openModal } from "./modalHandler.js";
+import { openModal } from "/js/components/modals.js";
+import { createDoctorCard } from "/js/components/doctorCard.js";
+
 /*
   This script handles the admin dashboard functionality for managing doctors:
   - Loads all doctor cards
   - Filters doctors by name, time, or specialty
   - Adds a new doctor via modal form
   */
-import { getDoctors, filterDoctors, saveDoctor } from "../services/doctorServices.js";
+import { getDoctors, filterDoctors, saveDoctor } from "/js/services/doctorServices.js";
+
 
 document.getElementById('addDocBtn').addEventListener('click', () => {
   openModal('addDoctor');
@@ -19,6 +22,7 @@ async function loadDoctorCards() {
   try {
     const doctors = await getDoctors();
     const contentDiv = document.getElementById('content');
+
     contentDiv.innerHTML = '';
     doctors.forEach(doctor => {
       const doctorCard = createDoctorCard(doctor);
@@ -87,7 +91,7 @@ window.adminAddDoctor = async function() {
     const response = await saveDoctor(doctor, token);
     if (response.success) {
       alert('Doctor added successfully!');
-        closeModal('addDoctor');
+        document.getElementById('closeModal').click();
         location.reload();
         }
     else {

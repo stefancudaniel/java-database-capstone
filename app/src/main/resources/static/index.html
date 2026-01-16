@@ -3,42 +3,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Select Role</title>
-    <link href="../assets/images/logo/Logo .png" rel="icon" type="image/png">
-    <link href="../assets/css/index.css" rel="stylesheet">
-    <link href="../assets/css/style.css" rel="stylesheet">
-    <script defer src="../js/util.js"></script>
-    <script defer src="../js/render.js"></script>
-    <script defer src="../js/components/header.js"></script>
-    <script defer src="../js/components/footer.js"></script>
+    <title>HOSPITAL CMS</title>
+    <link rel="icon" type="image/png" href="./assets/images/logo/Logo.png">
+    <link rel="stylesheet" href="./assets/css/index.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <script src="./js/util.js" defer></script>
+    <script src="./js/render.js" defer></script>
+    <script src="./js/components/header.js" defer></script>
+    <script src="./js/components/footer.js" defer></script>
 </head>
 <body>
-<div class="container">
-    <div class="wrapper">
-        <div id="header"></div>
-        <main>
-            <h1>Select Your Role</h1>
-            <div class="role-buttons">
-                <button id="adminBtn">Admin</button>
-                <button id="patientBtn">Patient</button>
-                <button id="doctorBtn">Doctor</button>
-            </div>
-        </main>
-        <div id="footer"></div>
-    </div>
-</div>
+<main>
+    <div class="container">
+        <div class="wrapper">
+            <div id="header"></div>
+            <main class="main-content">
+                <h2>Select Your Role</h2>
 
-<div class="modal" id="modal">
-    <div class="modal-content">
-        <span class="close-button">&times;</span>
-        <div id="modal-inner-content"></div>
-    </div>
-</div>
+                    <button id="adminLogin" type="button" aria-label="Select Admin role">Admin</button>
+                    <button id="patientBtn" type="button" aria-label="Select Patient role">Patient</button>
+                    <button id="doctorLogin" type="button" aria-label="Select Doctor role">Doctor</button>
 
-<script type="module" src="js/services/index.js" defer></script>
+            </main>
+            <div id="footer"></div>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <button type="button" id="closeModal" class="button-close" aria-label="Close modal" title="Close" style="width:28px;height:28px;font-size:16px;padding:0;float:flex-end;line-height:28px;border-radius:4px">&times;</button>
+            <div id="modal-inner-content"></div>
+        </div>
+    </div>
+
+    <!--script type="module" src="./js/pages/index.js" defer></script-->
+    <script src="/js/services/index.js" type="module"></script>
+</main>
 </body>
 </html>
-
 
 <!-- 
 

@@ -21,7 +21,6 @@ h2 {
     display: flex;
     flex-direction: column;
     text-align: center;
-    background-image: url("doctorBackground.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -60,6 +59,8 @@ button:hover {
 * Set font size to `24px` for clear emphasis.
 * Use a dark teal color (`#015c5d`) for consistency with the theme.
 * Add `30px` bottom margin and remove right margin.
+
+
 
 **Table Styling (`table`)**
 
