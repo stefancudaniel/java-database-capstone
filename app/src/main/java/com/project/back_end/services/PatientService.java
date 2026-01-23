@@ -57,14 +57,15 @@ public class PatientService {
 //    - Instruction: Ensure that appointment data is properly converted into DTOs and the method handles errors gracefully.
 
     @Transactional
-    public ResponseEntity<List<AppointmentDTO>> getPatientAppointment(Long patientId) {
+    public List<AppointmentDTO> getPatientAppointment(Long patientId) {
         try {
             List<Appointment> appointments = appointmentRepository.findByPatientId(patientId);
             List<AppointmentDTO> appointmentDTOs = convertToDTO(appointments);
-            return ResponseEntity.ok(appointmentDTOs);
+            return appointmentDTOs;
+            //return  appointments;
         } catch (Exception e) {
             System.out.println("Error retrieving patient appointments: " + e.getMessage());
-            return ResponseEntity.status(500).build();
+            return List.of();
         }
     }
 
@@ -74,7 +75,7 @@ public class PatientService {
 //    - Converts the appointments into `AppointmentDTO` and returns them in the response.
 //    - Instruction: Ensure the method correctly handles "past" and "future" conditions, and that invalid conditions are caught and returned as errors.
 
-    ResponseEntity<Map<String, Object>> filterByCondition(Long patientId, String condition) {
+    public List<AppointmentDTO> filterByCondition(Long patientId, String condition) {
         try {
             int status;
             if (condition.equalsIgnoreCase("future")) {
@@ -82,14 +83,13 @@ public class PatientService {
             } else if (condition.equalsIgnoreCase("past")) {
                 status = 1;
             } else {
-                return ResponseEntity.badRequest().body(Map.of("message", "Invalid condition. Use 'past' or 'future'."));
+                throw new IllegalArgumentException("Invalid condition. Use 'past' or 'future'.");
             }
             List<Appointment> appointments = appointmentRepository.findByPatient_IdAndStatusOrderByAppointmentTimeAsc(patientId, status);
-            List<AppointmentDTO> appointmentDTOs = convertToDTO(appointments);
-            return ResponseEntity.ok(Map.of("appointments", appointmentDTOs));
+            return convertToDTO(appointments);
         } catch (Exception e) {
             System.out.println("Error filtering appointments by condition: " + e.getMessage());
-            return ResponseEntity.status(500).build();
+            return List.of();
         }
     }
 
@@ -98,14 +98,13 @@ public class PatientService {
 //    - It retrieves appointments where the doctor’s name matches the given value, and the patient ID matches the provided ID.
 //    - Instruction: Ensure that the method correctly filters by doctor's name and patient ID and handles any errors or invalid cases.
 
-    ResponseEntity<Map<String, Object>> filterByDoctor(Long patientId, String doctorName) {
+    public List<AppointmentDTO>  filterByDoctor(Long patientId, String doctorName) {
         try {
             List<Appointment> appointments = appointmentRepository.filterByDoctorNameAndPatientId(doctorName, patientId);
-            List<AppointmentDTO> appointmentDTOs = convertToDTO(appointments);
-            return ResponseEntity.ok(Map.of("appointments", appointmentDTOs));
+            return convertToDTO(appointments);
         } catch (Exception e) {
             System.out.println("Error filtering appointments by doctor: " + e.getMessage());
-            return ResponseEntity.status(500).build();
+            return List.of();
         }
     }
 
@@ -115,7 +114,7 @@ public class PatientService {
 //    - Converts the appointments into `AppointmentDTO` objects and returns them in the response.
 //    - Instruction: Ensure that the filter handles both doctor name and condition properly, and catches errors for invalid input.
 
-    ResponseEntity<Map<String, Object>> filterByDoctorAndCondition(Long patientId, String doctorName, String condition) {
+    public List<AppointmentDTO> filterByDoctorAndCondition(Long patientId, String doctorName, String condition) {
         try {
             int status;
             if (condition.equalsIgnoreCase("future")) {
@@ -123,16 +122,15 @@ public class PatientService {
             } else if (condition.equalsIgnoreCase("past")) {
                 status = 1;
             } else {
-                return ResponseEntity.badRequest().body(Map.of("message", "Invalid condition. Use 'past' or 'future'."));
+                throw new IllegalArgumentException("Invalid condition. Use 'past' or 'future'.");
             }
 
             List<Appointment> appointments = appointmentRepository.filterByDoctorNameAndPatientIdAndStatus(doctorName, patientId, status);
-            List<AppointmentDTO> appointmentDTOs = convertToDTO(appointments);
 
-            return ResponseEntity.ok(Map.of("appointments", appointmentDTOs));
+            return convertToDTO(appointments);
         } catch (Exception e) {
             System.out.println("Error filtering appointments by doctor and condition: " + e.getMessage());
-            return ResponseEntity.status(500).build();
+            return List.of();
         }
     }
 
@@ -142,17 +140,17 @@ public class PatientService {
 //    - It returns the patient's information in the response body.
     //    - Instruction: Make sure that the token extraction process works correctly and patient details are fetched properly based on the extracted email.
 
-    public ResponseEntity<Map<String, Object>> getPatientDetails(String token) {
+    public Map<String, Object> getPatientDetails(String token) {
         try {
             String email = tokenService.extractIdentifier(token);
             Patient patient = patientRepository.findByEmail(email);
             if (patient == null) {
-                return ResponseEntity.status(404).body(Map.of("message", "Patient not found."));
+                return Map.of("message", "Patient not found.");
             }
-            return ResponseEntity.ok(Map.of("patient", patient));
+            return Map.of("patient", patient);
         } catch (Exception e) {
             System.out.println("Error retrieving patient details: " + e.getMessage());
-            return ResponseEntity.status(500).build();
+            return Map.of("message", "Error occurred while retrieving patient details.");
         }
     }
 
@@ -166,7 +164,7 @@ public class PatientService {
 //    - The service uses `AppointmentDTO` to transfer appointment-related data between layers. This ensures that sensitive or unnecessary data (e.g., password or private patient information) is not exposed in the response.
 //    - Instruction: Ensure that DTOs are used appropriately to limit the exposure of internal data and only send the relevant fields to the client.
 
-    List<AppointmentDTO> convertToDTO(List<Appointment> appointments) {
+    public List<AppointmentDTO> convertToDTO(List<Appointment> appointments) {
         return appointments.stream()
                 .map(appointment -> new AppointmentDTO(
                         appointment.getId(),

@@ -39,7 +39,7 @@ Import the overlay function for booking appointments from loggedPatient.js
   Append doctor info and action buttons to the car
   Return the complete doctor card element
 */
-//import { showBookingOverlay } from "../loggedPatient.js";
+import { showBookingOverlay } from "../loggedPatient.js";
 import { deleteDoctor } from "../services/doctorServices.js";
 import { getPatientData } from "../services/patientServices.js";
 
@@ -113,22 +113,23 @@ export function createDoctorCard(doctor) {
         }
         actionsContainer.appendChild(bookButton);
 
-        bookButton.onclick = async () => {
+        //bookButton.onclick = async () => {
+        bookButton.addEventListener('click', async(e) =>{
             const token = localStorage.getItem("token");
             if (!token) {
                 alert("Session expired. Please log in again.");
                 window.location.href = "/";
                 return;
             }
-            const patientResponse = await fetchPatientDetails(token);
-            if (!patientResponse.success) {
+            const patientResponse = await getPatientData(token);
+            if (!patientResponse) {
                 alert("Error fetching patient details. Please log in again.");
                 window.location.href = "/";
                 return;
             }
-            const patient = patientResponse.data;
-           // showBookingOverlay(doctor, patient);
-        };
+
+            showBookingOverlay(e, doctor, patientResponse);
+        });
     }
 
     card.appendChild(infoContainer);

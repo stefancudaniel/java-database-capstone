@@ -4,6 +4,7 @@ import com.project.back_end.models.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +41,17 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     @Transactional
     @Query("UPDATE Appointment a SET a.status = :status WHERE a.id = :id")
     void updateStatus(int status, long id);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Appointment a SET a.appointmentTime = :appointmentTime WHERE a.id = :id")
+    void updateApponntmentTimeById(LocalDateTime appointmentTime, long id);
+
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query("UPDATE Appointment a SET a.appointmentTime = :appointmentTime WHERE a.id = :id")
+    int updateAppointmentTimeById(@Param("appointmentTime") LocalDateTime appointmentTime, @Param("id") Long id);
 
 
    // 1. Extend JpaRepository:

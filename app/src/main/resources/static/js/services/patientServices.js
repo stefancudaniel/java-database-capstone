@@ -59,35 +59,28 @@ export async function getPatientAppointments(id, token, user) {
   try {
     const response = await fetch(`${PATIENT_API}/${id}/${user}/${token}`);
     const data = await response.json();
-    console.log(data.appointments)
-    if (response.ok) {
-      return data.appointments;
+    if(response.ok) {
+        return data.appointments ?? [];
     }
-    return null;
-  }
-  catch (error) {
-    console.error("Error fetching patient details:", error);
-    return null;
+    else{
+    console.error("Error fetching appointments:", response.statusText);}
+    return{ appointments: [] };
+  } catch (error) {
+    console.error("Error fetching appointments:", error);
+    return { appointments: [] };
   }
 }
 
+
 export async function filterAppointments(condition, name, token) {
   try {
-    const response = await fetch(`${PATIENT_API}/filter/${condition}/${name}/${token}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
+    const response = await fetch(`${PATIENT_API}/filter/${condition}/${name}/${token}`);
+    const data = await response.json();
     if (response.ok) {
-      const data = await response.json();
-      return data;
-
+      return data.appointments ?? [];
     } else {
-      console.error("Failed to fetch doctors:", response.statusText);
+      console.error("Failed to fetch appointments:", response.statusText);
       return { appointments: [] };
-
     }
   } catch (error) {
     console.error("Error:", error);
@@ -95,3 +88,4 @@ export async function filterAppointments(condition, name, token) {
     return { appointments: [] };
   }
 }
+

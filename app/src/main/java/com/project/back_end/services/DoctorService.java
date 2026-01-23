@@ -1,6 +1,7 @@
 package com.project.back_end.services;
 
 import com.project.back_end.DTO.Login;
+import com.project.back_end.models.Appointment;
 import com.project.back_end.models.Doctor;
 import com.project.back_end.repo.AppointmentRepository;
 import com.project.back_end.repo.DoctorRepository;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -47,9 +50,14 @@ public class DoctorService {
 //    - Instruction: Ensure that the time slots are properly formatted and the available slots are correctly filtered.
 
     @Transactional
-    public List<String> getDoctorAvailability(Long doctorId, LocalDate date) {
-        //TODO: Implement method to get doctor's available time slots
+    public List<Appointment> getDoctorAvailability(Long doctorId, Appointment appointment) {
+        return appointmentRepository.findByDoctorIdAndAppointmentTimeBetween(doctorId, appointment.getAppointmentTime(), appointment.getEndTime());
+
+    }
+
+    public List<Appointment> getDoctorAvailability(Long doctorId, LocalDate date) {
         return null;
+
     }
 
 // 5. **saveDoctor Method**:
@@ -166,7 +174,6 @@ public class DoctorService {
 //    - Instruction: Ensure that the time filtering logic correctly handles both AM and PM time slots and edge cases.
 
     List<Doctor> filterDoctorByTime(String amOrPm) {
-        //TODO: Implement filtering logic based on time (AM/PM)
         List<Doctor> doctors = doctorRepository.findAllWithAvailableTimes();
         return filterDoctorsByTime(doctors, amOrPm);
     }
@@ -178,7 +185,6 @@ public class DoctorService {
 //    - Instruction: Ensure that the method correctly filters doctors based on the given name and time of day (AM/PM).
 
     List<Doctor> filterDoctorByNameAndTime(String name, String amOrPm) {
-        //TODO: Implement filtering logic based on name and time (AM/PM)
         List<Doctor> doctors = doctorRepository.findByNameLike(name);
         return filterDoctorsByTime(doctors, amOrPm);
     }

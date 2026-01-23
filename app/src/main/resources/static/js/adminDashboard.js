@@ -33,14 +33,14 @@ async function loadDoctorCards() {
   }
 }
 
-document.getElementById('searchBar').addEventListener('input', filterDoctorsOnChange);
-document.getElementById('timeFilter').addEventListener('change', filterDoctorsOnChange);
-document.getElementById('specialtyFilter').addEventListener('change', filterDoctorsOnChange);
+document.getElementById('searchBarForDoctors').addEventListener('input', filterDoctorsOnChange);
+document.getElementById('filterTimeForDoctors').addEventListener('change', filterDoctorsOnChange);
+document.getElementById('filterSpecialtyForDoctors').addEventListener('change', filterDoctorsOnChange);
 
 async function filterDoctorsOnChange() {
-  const name = document.getElementById('searchBar').value || null;
-  const time = document.getElementById('timeFilter').value || null;
-    const specialty = document.getElementById('specialtyFilter').value || null;
+  const name = document.getElementById('searchBarForDoctors').value || null;
+  const time = document.getElementById('filterTimeForDoctors').value || null;
+    const specialty = document.getElementById('filterSpecialtyForDoctors').value || null;
     try {
     const filteredDoctors = await filterDoctors(name, time, specialty);
     if (filteredDoctors.length > 0) {

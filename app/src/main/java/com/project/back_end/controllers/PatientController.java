@@ -6,6 +6,8 @@ import com.project.back_end.services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/patient")
 public class PatientController {
@@ -73,14 +75,14 @@ public class PatientController {
 //    - Validates the token using the shared service.
 //    - If valid, retrieves the patient's appointment data from `PatientService`; otherwise, returns a validation error.
 
-    @GetMapping("/{id}/{token}")
-    public Object getPatientAppointment(@PathVariable Long id,
+    @GetMapping("/{id}/{user}/{token}")
+    public Map<String,Object> getPatientAppointment(@PathVariable Long id, @PathVariable String user,
                                         @PathVariable String token) {
         var resp = service.validateToken(token, "patient");
         if (resp != null) {
-            return resp;
+            return Map.of("message", resp.getBody().get("message"));
         } else {
-            return patientService.getPatientAppointment(id);
+            return Map.of("appointments", patientService.getPatientAppointment(id));
         }
     }
 
@@ -91,14 +93,14 @@ public class PatientController {
 //    - If valid, delegates filtering logic to the shared service and returns the filtered result.
 
     @GetMapping("/filter/{condition}/{name}/{token}")
-    public Object filterPatientAppointment(@PathVariable String condition,
+    public  Map<String,Object> filterPatientAppointment(@PathVariable String condition,
                                            @PathVariable String name,
                                            @PathVariable String token) {
         var resp = service.validateToken(token, "patient");
         if (resp != null) {
-            return resp;
+            return Map.of("message", resp.getBody().get("message"));
         } else {
-            return service.filterPatient(condition, name, token);
+            return Map.of("appointments", service.filterPatient(condition, name, token));
         }
     }
 

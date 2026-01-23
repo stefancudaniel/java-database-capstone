@@ -6,12 +6,19 @@ const APPOINTMENT_API = `${API_BASE_URL}/appointments`;
 
 //This is for the doctor to get all the patient Appointments
 export async function getAllAppointments(date, patientName, token) {
+try {
   const response = await fetch(`${APPOINTMENT_API}/${date}/${patientName}/${token}`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch appointments");
-  }
-
-  return await response.json();
+  const data = await response.json();
+      if(response.ok) {
+          return data.appointments ?? [];
+      }
+      else{
+      console.error("Error fetching appointments:", response.statusText);}
+      return{ appointments: [] };
+    } catch (error) {
+      console.error("Error fetching appointments:", error);
+      return { appointments: [] };
+    }
 }
 
 export async function bookAppointment(appointment, token) {
@@ -61,3 +68,5 @@ export async function updateAppointment(appointment, token) {
     };
   }
 }
+
+

@@ -1,5 +1,6 @@
 package com.project.back_end.services;
 
+import com.project.back_end.DTO.AppointmentDTO;
 import com.project.back_end.DTO.Login;
 import com.project.back_end.models.Admin;
 import com.project.back_end.models.Appointment;
@@ -10,6 +11,7 @@ import com.project.back_end.repo.PatientRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
 import java.util.Map;
 
 @org.springframework.stereotype.Service
@@ -136,12 +138,15 @@ public class Service {
         try {
             var doctorOpt = doctorRepository.findById(appointment.getDoctor().getId());
             if (doctorOpt.isPresent()) {
-                var availableSlots = doctorService.getDoctorAvailability(appointment.getDoctor().getId(), appointment.getAppointmentDate());
-                for (String slot : availableSlots) {
+                var availableSlots = doctorService.getDoctorAvailability(appointment.getDoctor().getId(), appointment);
+               /* for (String slot : availableSlots) {
                     String startTime = slot.split("-")[0];
                     if (startTime.equals(appointment.getAppointmentTime().getHour() + ":" + String.format("%02d", appointment.getAppointmentTime().getMinute()))) {
                         return 1; // Valid appointment time
                     }
+                }*/
+                if (availableSlots.isEmpty()){
+                    return 1;
                 }
                 return 0; // Invalid appointment time
             } else {
@@ -202,21 +207,17 @@ public class Service {
 // This flexible method supports patient-specific querying and enhances user experience on the client side.
 
 
-    public ResponseEntity<Map<String, Object>> filterPatient(String token, String condition, String doctorName) {
+    public List<AppointmentDTO> filterPatient(String condition, String doctorName, String token) {
         Patient patient = patientRepository.findByEmail(tokenService.extractIdentifier(token));
         if (token == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Invalid or expired token"));
+            return List.of();
         }
-       if(!condition.isEmpty() && !doctorName.isEmpty()){
-            return ResponseEntity.ok(Map.of("appointment",patientService.filterByDoctorAndCondition(patient.getId(), doctorName, condition)));
-       } else if (!condition.isEmpty()){
-           return ResponseEntity.ok(Map.of("appointment",patientService.filterByDoctor(patient.getId(), doctorName)));
-       } else if (doctorName.isEmpty()) {
-           return ResponseEntity.ok(Map.of("appointment",patientService.filterByCondition(patient.getId(), condition)));
-       }
-       else {
-              return ResponseEntity.ok(Map.of("appointment",patientService.getPatientAppointment(patient.getId())));
+       if((!condition.equals("null")) && (!doctorName.equals("null"))){
+           return patientService.filterByDoctorAndCondition(patient.getId(), doctorName, condition);
+       } else if (!condition.equals("null")){
+           return patientService.filterByCondition(patient.getId(), condition);
+       } else {
+           return patientService.filterByDoctor(patient.getId(), doctorName);
        }
     }
 

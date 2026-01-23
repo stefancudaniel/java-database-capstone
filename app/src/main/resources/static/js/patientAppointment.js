@@ -49,7 +49,7 @@ function renderAppointments(appointments) {
       <td>${appointment.doctorName}</td>
       <td>${appointment.appointmentDate}</td>
       <td>${appointment.appointmentTimeOnly}</td>
-      <td>${appointment.status == 0 ? `<img src="../assets/images/edit/edit.png" alt="Edit" class="prescription-btn" data-id="${appointment.patientId}">` : "-"}</td>
+      <td>${appointment.status == 0 ? `<img src="../assets/images/edit/edit.png" alt="Edit" width="20" height="20" style="width:20px;height:20px;object-fit:contain;" class="prescription-btn" data-id="${appointment.patientId}">` : "-"}</td>
     `;
 
     if (appointment.status == 0) {
@@ -92,8 +92,7 @@ async function handleFilterChange() {
   const condition = filterValue === "allAppointments" ? null : filterValue || null;
 
   try {
-    const response = await filterAppointments(condition, name, token);
-    const appointments = response?.appointments || [];
+    const appointments = await filterAppointments(condition, name, token) || [];
     filteredAppointments = appointments.filter(app => app.patientId === patientId);
 
     renderAppointments(filteredAppointments);

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/appointments")
+@RequestMapping("${api.path}" + "appointments")
 public class AppointmentController {
 
 // 1. Set Up the Controller Class:
@@ -89,11 +89,11 @@ public class AppointmentController {
 //    - Returns an appropriate success or failure response based on the update result.
 
     @PutMapping("/{token}")
-    public ResponseEntity<Map<String, String>> updateAppointment(@RequestBody Appointment appointment,
+    public Map<String, String> updateAppointment(@RequestBody Appointment appointment,
                                                                  @PathVariable String token) {
-        ResponseEntity<Map<String, String>> resp = service.validateToken(token, "patient");
+        var resp = service.validateToken(token, "patient");
         if (resp != null) {
-            return resp;
+            return resp.getBody();
         }
         return appointmentService.updateAppointment(appointment);
     }

@@ -69,25 +69,25 @@ public class AppointmentService {
 //    - If the update is successful, it saves the appointment; otherwise, it returns an appropriate error message.
 //    - Instruction: Ensure proper validation and error handling is included for appointment updates.
 
-    public ResponseEntity<Map<String, String>> updateAppointment(Appointment appointment) {
+    public Map<String, String> updateAppointment(Appointment appointment) {
         Appointment existingAppointment = appointmentRepository.findById(appointment.getId()).orElse(null);
         if (existingAppointment == null) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Appointment not found."));
+            return Map.of("message", "Appointment not found.");
         }
 
         int validationStatus = service.validateAppointment(appointment);
         if (validationStatus == 0) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Doctor is not available at the requested time."));
+            return Map.of("message", "Doctor is not available at the requested time.");
         }
         if (validationStatus == -1) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Invalid doctor ID."));
+            return Map.of("message", "Invalid doctor ID.");
         }
 
         try {
-            existingAppointment.setAppointmentTime(appointment.getAppointmentTime());
-            return ResponseEntity.ok(Map.of("message", "Appointment updated successfully."));
+            appointmentRepository.updateApponntmentTimeById(appointment.getAppointmentTime(), appointment.getId());
+            return Map.of("message", "Appointment updated successfully.");
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(Map.of("message", "Error updating appointment: " + e.getMessage()));
+            return Map.of("message", "Error updating appointment: " + e.getMessage());
         }
 
 
@@ -101,7 +101,7 @@ public class AppointmentService {
 
     public ResponseEntity<Map<String, String>> cancelAppointment(Long appointmentId, String token) {
         //TODO
-        Patient pacient = (Patient) patientService.getPatientDetails(token).getBody();
+        Patient pacient = (Patient) patientService.getPatientDetails(token);
         Appointment appointment = appointmentRepository.findById(appointmentId).orElse(null);
         if (appointment == null) {
             return ResponseEntity.badRequest().body(Map.of("message", "Appointment not found."));

@@ -6,7 +6,7 @@
 // javascript
 import { getAllAppointments } from "/js/services/appointmentRecordService.js";
 import { createPatientRow } from "/js/components/patientRows.js";
-// import { renderContent } from "/js/render.js";
+//import { renderContent } from "/js/render.js";
 
 let tableBody = null;
 let selectedDate = new Date().toISOString().split('T')[0]; // Default to today
@@ -24,13 +24,64 @@ async function loadAppointments() {
       console.error('Table body element not found');
       return;
     }
-
     const appointments = await getAllAppointments(selectedDate, patientName, token);
-
     // Clear existing rows
-    tableBody.innerHTML = '';
+   // tableBody.innerHTML = '';
+    tableBody.innerHTML = "";
 
-    let list ;
+    const actionTh = document.querySelector("#patientTable thead tr th:last-child");
+      if (actionTh) {
+        actionTh.style.display = "table-cell"; // Always show "Actions" column
+      }
+
+      if (!appointments.length) {
+        tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No Appointments Found</td></tr>`;
+        return;
+      }
+
+      /*appointments.forEach(appointment => {
+      createPatientRow(appointment.patient, appointment.id, appointment.doctorId).then((row) => {
+        tableBody.appendChild(row);
+      })*/
+
+      for (const appointment of appointments) {
+        try {
+          const row = await createPatientRow(appointment.patient, appointment.id, appointment.doctorId);
+          if (row) tableBody.appendChild(row);
+          else console.warn('createPatientRow returned no element for', appointment);
+        } catch (err) {
+          console.error('Error creating row for appointment', appointment, err);
+        }
+      }
+       /* const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${appointment.patientId }</td>
+          <td>${appointment.patientName}</td>
+          <td>${appointment.patientPhone}</td>
+          <td>${appointment.patientEmail}</td>
+          <td>${appointment.status == 0 ? `<img src="../assets/images/edit/edit.png" alt="Edit" width="24" height="24" style="width:24px;height:24px;object-fit:contain;" class="prescription-btn" data-id="${appointment.patientId}">` : "-"}</td>
+        `;
+
+        if (appointment.status == 0) {
+          const actionBtn = tr.querySelector(".prescription-btn");
+          actionBtn?.addEventListener("click", () => redirectToUpdatePage(appointment));
+        }
+
+        tableBody.appendChild(tr);*/
+     // });
+      } catch (error) {
+    console.error("Error loading appointments:", error);
+    if (!tableBody) return;
+    tableBody.innerHTML = '';
+    const errorRow = document.createElement('tr');
+    const errorCell = document.createElement('td');
+    errorCell.colSpan = 5;
+    errorCell.textContent = 'Error loading appointments. Try again later.';
+    errorRow.appendChild(errorCell);
+    tableBody.appendChild(errorRow);
+  }
+
+    /*let list ;
         if (appointments && typeof appointments === 'object' && appointments.appointments && Array.isArray(appointments.appointments)) {
           // If the payload is an object with an 'appointments' array property, use that array
           list = appointments.appointments;
@@ -75,13 +126,13 @@ async function loadAppointments() {
     errorCell.textContent = 'Error loading appointments. Try again later.';
     errorRow.appendChild(errorCell);
     tableBody.appendChild(errorRow);
-  }
+  }*/
 }
 
 // Attach DOM listeners after DOM is ready
 window.addEventListener('DOMContentLoaded', () => {
-  tableBody = document.getElementById('appointmentsTableBody');
-
+  //tableBody = document.getElementById('appointmentsTableBody');
+ tableBody = document.getElementById('patientTableBody');
   const searchBar = document.getElementById('searchBar');
   if (searchBar) {
     searchBar.addEventListener('input', (event) => {

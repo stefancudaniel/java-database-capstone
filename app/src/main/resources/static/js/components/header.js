@@ -125,6 +125,8 @@
   16. **Render the Header**: Finally, the `renderHeader()` function is called to initialize the header rendering process when the page loads.
 */
 
+/*import { openModal } from './components/modals.js';*/
+
 function renderHeader() {
   const headerDiv = document.getElementById("header");
 
@@ -143,7 +145,7 @@ function renderHeader() {
         }
         if (role === "admin") {
               headerContent += `
-                <button id="addDocBtn" class="adminBtn" onclick="openModal('addDoctor')">Add Doctor</button>
+                <button id="addDocBtn" class="adminBtn" /*onclick="openModal('addDoctor')"*/>Add Doctor</button>
                 <a href="#" onclick="logout()">Logout</a>`;
             }
             if(role === "doctor") {
@@ -153,8 +155,8 @@ function renderHeader() {
             }
             if(role === "patient") {
               headerContent += `
-                <button id="patientLogin" class="adminBtn">Login</button>
-                <button id="patientSignup" class="adminBtn">Sign Up</button>`;
+                <button id="patientLogin" class="adminBtn" onclick="openModal('patientLogin')">Login</button>
+                <button id="patientSignup" class="adminBtn" onclick="openModal('patientSignup')">Sign Up</button>`;
             }
             if(role === "loggedPatient") {
               headerContent += `
@@ -181,7 +183,7 @@ function attachHeaderButtonListeners() {
   const patientSignupBtn = document.getElementById("patientSignup");
     if (patientLoginBtn) {
 
-    patientLoginBtn.addEventListener("click", () => {
+  /*  patientLoginBtn.addEventListener("click", () => {
       openModal("patientLogin");
     }
     );
@@ -189,7 +191,7 @@ function attachHeaderButtonListeners() {
     if (patientSignupBtn) {
     patientSignupBtn.addEventListener("click", () => {
       openModal("patientSignup");
-    });
+    });*/
   }
 }
 

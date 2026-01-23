@@ -82,7 +82,7 @@ public class Appointment {
 //      - It is used to get an estimated appointment end time for display purposes.
     @Transient
     public LocalDateTime getEndTime() {
-        return this.appointmentTime.plusHours(1);
+        return this.appointmentTime.plusMinutes(59);
     }
 
 // 7. 'getAppointmentDate' method:

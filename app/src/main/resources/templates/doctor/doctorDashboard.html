@@ -21,16 +21,13 @@
         <div class="wrapper">
             <div id="header"></div>
             <div class="main-content">
-                <div class="search-bar">
-                    <input type="text" id="searchBar" class="searchBar" placeholder="Search Bar for custom output" />
-                </div>
+                <input type="text" id="searchBar" class="searchBar" placeholder="Search Bar for custom output" />
                 <div class="filters">
                     <button id="todayBtn" class="filter-button">Today's Appointments</button>
                     <input type="date" id="datePicker" class="date-picker" />
                 </div>
-                <div class="patient-table-container">
-                    <table class="patientTable">
-                        <thead>
+                    <table id="patientTable">
+                        <thead class="table-header">
                             <tr>
                                 <th>Patient ID</th>
                                 <th>Name</th>
@@ -43,7 +40,7 @@
                             <!-- Patient data will be dynamically inserted here -->
                         </tbody>
                     </table>
-                </div>
+
             </div>
             <div id="footer"></div>
         </div>

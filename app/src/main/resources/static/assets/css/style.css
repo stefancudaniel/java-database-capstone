@@ -207,18 +207,6 @@
     width: 100%;
   }
 
-  .button-close {
-    background-color: #e28282;
-    color: white;
-    style: width 28px length 28px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 20px;
-  }
-
   .input-field {
     padding: 10px;
     border: 1px solid #ccc;
